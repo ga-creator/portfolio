@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprameyya Garg — Data & ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07090d; --bg2:#0d1117; --card:#11161f; --line:#1f2836;
+  --txt:#e8edf5; --mut:#8b97a8; --acc:#c6ff3d; --acc2:#3de0ff; --warn:#ff5c7a;
+  --sans:'Space Grotesk',system-ui,-apple-system,Segoe UI,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--acc);color:#000}
+
+/* cursor glow */
+#glow{position:fixed;width:500px;height:500px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(198,255,61,.08),transparent 60%);transform:translate(-50%,-50%);transition:opacity .3s}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:18px 6vw;backdrop-filter:blur(14px);background:rgba(7,9,13,.6);border-bottom:1px solid transparent;transition:.3s}
+nav.scrolled{border-bottom-color:var(--line)}
+.logo{font-family:var(--mono);font-weight:600;font-size:1.05rem}
+.logo span{color:var(--acc)}
+.links{display:flex;gap:28px;font-size:.92rem}
+.links a{color:var(--mut);position:relative;transition:color .2s}
+.links a:hover,.links a.on{color:var(--txt)}
+.links a.on::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--acc);border-radius:2px}
+#burger{display:none;background:none;border:0;color:var(--txt);font-size:1.5rem;cursor:pointer}
+
+/* hero */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 6vw 60px;overflow:hidden}
+#net{position:absolute;inset:0;z-index:0}
+.hero-in{position:relative;z-index:2;max-width:900px}
+.tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.8rem;color:var(--acc);
+  border:1px solid rgba(198,255,61,.3);padding:6px 14px;border-radius:99px;margin-bottom:28px;background:rgba(198,255,61,.05)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 10px var(--acc);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+h1{font-size:clamp(3rem,9vw,7rem);line-height:.95;font-weight:700;letter-spacing:-.04em}
+h1 .out{color:transparent;-webkit-text-stroke:1.5px var(--txt)}
+.role{font-family:var(--mono);font-size:clamp(1rem,2.4vw,1.5rem);margin:26px 0 18px;color:var(--mut)}
+.role b{color:var(--acc2);font-weight:600}
+.caret{display:inline-block;width:10px;background:var(--acc);animation:blink 1s steps(1) infinite;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+.lead{max-width:600px;color:var(--mut);font-size:1.1rem}
+.cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+.btn{padding:14px 26px;border-radius:12px;font-weight:600;font-size:.95rem;cursor:pointer;border:1px solid var(--line);
+  background:var(--card);color:var(--txt);transition:.25s;font-family:var(--sans);display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--acc);transform:translateY(-2px)}
+.btn.p{background:var(--acc);color:#000;border-color:var(--acc)}
+.btn.p:hover{box-shadow:0 10px 40px rgba(198,255,61,.35)}
+.scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;font-family:var(--mono);font-size:.7rem;color:var(--mut);
+  display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll i{width:1px;height:40px;background:linear-gradient(var(--acc),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* sections */
+section{position:relative;z-index:1;padding:110px 6vw}
+.sh{display:flex;align-items:baseline;gap:18px;margin-bottom:56px}
+.sh .n{font-family:var(--mono);color:var(--acc);font-size:.9rem}
+.sh h2{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.03em;line-height:1}
+.sh .ln{flex:1;height:1px;background:var(--line)}
+.rv{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.st{background:var(--bg2);padding:34px 26px}
+.st .v{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.03em;color:var(--acc)}
+.st .l{color:var(--mut);font-size:.88rem;margin-top:4px}
+
+/* about */
+.about{display:grid;grid-template-columns:1.3fr 1fr;gap:60px;align-items:start}
+.about p{color:var(--mut);font-size:1.1rem;margin-bottom:18px}
+.about p b{color:var(--txt);font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:28px}
+.kv{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.kv:last-child{border:0}
+.kv span:first-child{color:var(--mut);font-family:var(--mono);font-size:.8rem}
+
+/* experience */
+.xp{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:36px;border:1px solid var(--line);border-radius:18px;background:var(--card);transition:.3s}
+.xp:hover{border-color:rgba(198,255,61,.4)}
+.xp .when{font-family:var(--mono);font-size:.85rem;color:var(--acc)}
+.xp h3{font-size:1.5rem;margin-bottom:12px}
+.xp ul{list-style:none;color:var(--mut)}
+.xp li{padding-left:22px;position:relative;margin-bottom:10px}
+.xp li::before{content:'▹';position:absolute;left:0;color:var(--acc)}
+.lnk{font-family:var(--mono);font-size:.82rem;color:var(--acc2);display:inline-flex;gap:6px;margin-top:10px;border-bottom:1px solid transparent}
+.lnk:hover{border-color:var(--acc2)}
+
+/* projects */
+.filters{display:flex;gap:10px;margin-bottom:34px;flex-wrap:wrap}
+.f{font-family:var(--mono);font-size:.82rem;padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--mut);cursor:pointer;transition:.2s}
+.f:hover{color:var(--txt)}
+.f.on{background:var(--acc);color:#000;border-color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pj{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px;cursor:pointer;
+  transition:transform .15s,border-color .3s,opacity .4s;transform-style:preserve-3d;overflow:hidden;display:flex;flex-direction:column}
+.pj::before{content:'';position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(61,224,255,.12),transparent 50%);opacity:0;transition:.3s}
+.pj:hover::before{opacity:1}
+.pj:hover{border-color:rgba(61,224,255,.45)}
+.pj.hide{display:none}
+.pj .ic{font-size:2rem;margin-bottom:18px}
+.pj .d{font-family:var(--mono);font-size:.75rem;color:var(--mut)}
+.pj h3{font-size:1.3rem;line-height:1.25;margin:8px 0 12px}
+.pj p{color:var(--mut);font-size:.95rem;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.chip{font-family:var(--mono);font-size:.7rem;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--mut)}
+.more{margin-top:18px;font-family:var(--mono);font-size:.8rem;color:var(--acc)}
+
+/* modal */
+#modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+#modal.open{display:flex;animation:fade .25s}
+@keyframes fade{from{opacity:0}}
+.mb{background:var(--bg2);border:1px solid var(--line);border-radius:22px;max-width:720px;width:100%;max-height:88vh;overflow:auto;padding:40px;position:relative;animation:up .35s cubic-bezier(.2,.7,.2,1)}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.x{position:absolute;top:18px;right:18px;background:var(--card);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:1.1rem}
+.mb h3{font-size:1.8rem;line-height:1.2;margin:8px 0 18px;padding-right:40px}
+.mb p,.mb li{color:var(--mut)}
+.mb ul{margin:14px 0 0 18px}
+.mb li{margin-bottom:8px}
+.bars{margin:24px 0}
+.bar{margin-bottom:16px}
+.bar .top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.8rem;margin-bottom:6px}
+.bar .tr{height:10px;background:var(--card);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar .fl{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--acc2),var(--acc));transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+
+/* fraud demo */
+.demo{margin-top:26px;padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.demo h4{font-family:var(--mono);font-size:.85rem;color:var(--acc);margin-bottom:14px}
+.rg{margin-bottom:14px}
+.rg label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mut);margin-bottom:6px}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.risk{display:flex;align-items:center;gap:14px;margin-top:10px;font-family:var(--mono)}
+.risk .meter{flex:1;height:14px;border-radius:99px;background:linear-gradient(90deg,#3dff9a,#ffd23d,#ff5c7a);position:relative}
+.risk .pin{position:absolute;top:-5px;width:4px;height:24px;background:#fff;border-radius:2px;transition:left .3s;box-shadow:0 0 8px #fff}
+.risk .lab{min-width:110px;text-align:right;font-weight:600}
+
+/* skills */
+.sk{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.sk .card h4{font-family:var(--mono);font-size:.82rem;color:var(--acc);margin-bottom:18px;letter-spacing:.05em}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{padding:8px 14px;border-radius:10px;border:1px solid var(--line);font-size:.9rem;transition:.2s;cursor:default}
+.pill:hover{border-color:var(--acc2);color:var(--acc2);transform:translateY(-3px)}
+
+/* terminal */
+.term{background:#05070a;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-family:var(--mono);font-size:.88rem;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.tb{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--card);border-bottom:1px solid var(--line)}
+.tb i{width:12px;height:12px;border-radius:50%}
+.tb span{margin-left:10px;color:var(--mut);font-size:.78rem}
+#tout{padding:18px 20px 0;height:320px;overflow-y:auto}
+#tout div{white-space:pre-wrap;margin-bottom:4px}
+.tl{display:flex;padding:8px 20px 18px;gap:10px}
+.tl b{color:var(--acc)}
+#tin{flex:1;background:none;border:0;outline:0;color:var(--txt);font:inherit}
+.c-a{color:var(--acc)}.c-b{color:var(--acc2)}.c-m{color:var(--mut)}.c-w{color:var(--warn)}
+.hints{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+/* timeline */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.tlist{border-left:1px solid var(--line);padding-left:28px}
+.ti{position:relative;margin-bottom:34px}
+.ti::before{content:'';position:absolute;left:-34px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--acc)}
+.ti .when{font-family:var(--mono);font-size:.78rem;color:var(--acc)}
+.ti h4{font-size:1.1rem;margin:4px 0}
+.ti p{color:var(--mut);font-size:.92rem}
+.sub{font-family:var(--mono);font-size:.85rem;color:var(--mut);margin-bottom:24px;letter-spacing:.08em}
+
+/* contact */
+#contact{text-align:center;padding-bottom:80px}
+.big{font-size:clamp(2.6rem,8vw,6rem);font-weight:700;letter-spacing:-.04em;line-height:1}
+.big span{color:var(--acc)}
+.cl{display:flex;justify-content:center;gap:14px;margin-top:40px;flex-wrap:wrap}
+footer{text-align:center;padding:30px;color:var(--mut);font-family:var(--mono);font-size:.78rem;border-top:1px solid var(--line);position:relative;z-index:1}
+#toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,120px);background:var(--acc);color:#000;padding:12px 22px;border-radius:12px;font-weight:600;z-index:200;transition:.35s}
+#toast.show{transform:translate(-50%,0)}
+
+@media(max-width:900px){
+  .links{position:fixed;top:64px;right:0;left:0;flex-direction:column;background:var(--bg2);padding:24px 6vw;gap:18px;border-bottom:1px solid var(--line);display:none}
+  .links.open{display:flex}
+  #burger{display:block}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .about,.two,.xp{grid-template-columns:1fr;gap:28px}
+  .grid,.sk{grid-template-columns:1fr}
+  .mb{padding:28px}
+}
+</style>
+</head>
+<body>
+<div id="glow"></div>
+
+<nav id="nav">
+  <a href="#hero" class="logo">&lt;AG<span>/</span>&gt;</a>
+  <div class="links" id="links">
+    <a href="#about">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a>
+    <a href="#skills">Skills</a><a href="#terminal">Terminal</a><a href="#journey">Journey</a><a href="#contact">Contact</a>
+  </div>
+  <button id="burger" aria-label="Menu">☰</button>
+</nav>
+
+<!-- HERO -->
+<header id="hero">
+  <canvas id="net"></canvas>
+  <div class="hero-in">
+    <div class="tag"><span class="dot"></span>Open to internships & opportunities</div>
+    <h1>Aprameyya<br><span class="out">Garg.</span></h1>
+    <div class="role">&gt; <b id="typed"></b><span class="caret">&nbsp;</span></div>
+    <p class="lead">CS undergrad at LPU turning messy, imbalanced, real-world data into models, dashboards and tools people can actually use.</p>
+    <div class="cta">
+      <a href="#projects" class="btn p">View projects →</a>
+      <a href="#contact" class="btn">Get in touch</a>
+    </div>
+  </div>
+  <div class="scroll">SCROLL<i></i></div>
+</header>
+
+<!-- STATS -->
+<section style="padding-top:20px;padding-bottom:40px">
+  <div class="stats rv">
+    <div class="st"><div class="v" data-c="284807">0</div><div class="l">transactions modelled</div></div>
+    <div class="st"><div class="v" data-c="0.971" data-d="3">0</div><div class="l">best ROC-AUC (Random Forest)</div></div>
+    <div class="st"><div class="v" data-c="7.93" data-d="2">0</div><div class="l">CGPA after 4 semesters</div></div>
+    <div class="st"><div class="v" data-c="3">0</div><div class="l">end-to-end projects shipped</div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sh rv"><span class="n">01</span><h2>About</h2><span class="ln"></span></div>
+  <div class="about">
+    <div class="rv">
+      <p>I'm a <b>B.Tech Computer Science & Engineering</b> student at Lovely Professional University, drawn to the space where <b>machine learning meets data analytics</b>.</p>
+      <p>I've built fraud detectors that work <b>without labels</b>, Power BI dashboards on raw government energy data, and an NLP pipeline that scores the credibility of claims. Most recently I interned at <b>Firstplanit Ltd</b>, shipping a RAM-efficient image-search feature.</p>
+      <p>Outside the code: public speaking, leading teams, and solving problems that don't have a tutorial yet.</p>
+    </div>
+    <div class="card rv">
+      <div class="kv"><span>BASED IN</span><span>Punjab / New Delhi, IN</span></div>
+      <div class="kv"><span>STUDYING</span><span>B.Tech CSE @ LPU</span></div>
+      <div class="kv"><span>FOCUS</span><span>ML · Data Analytics</span></div>
+      <div class="kv"><span>LATEST</span><span>Intern @ Firstplanit</span></div>
+      <div class="kv"><span>STATUS</span><span style="color:var(--acc)">● Available</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sh rv"><span class="n">02</span><h2>Experience</h2><span class="ln"></span></div>
+  <div class="xp rv">
+    <div><div class="when">JUN 2026 — JUL 2026</div><div class="c-m" style="margin-top:6px;font-size:.9rem">Internship</div></div>
+    <div>
+      <h3>Intern · Firstplanit Ltd</h3>
+      <ul>
+        <li>Developed an image-search feature in Python, optimised for fast search and RAM-efficient data processing.</li>
+        <li>Built front-end pages for internal workflows, translating team requirements into functional tools.</li>
+        <li>Collaborated cross-functionally and communicated technical progress to senior stakeholders.</li>
+      </ul>
+      <a class="lnk" href="https://drive.google.com/file/d/1cW9SqNUToS9mFZ4c_nAYSIPU7yvB-LqB/view?usp=sharing" target="_blank" rel="noopener">↗ Internship letter</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sh rv"><span class="n">03</span><h2>Projects</h2><span class="ln"></span></div>
+  <div class="filters rv">
+    <button class="f on" data-f="all">All</button>
+    <button class="f" data-f="ml">Machine Learning</button>
+    <button class="f" data-f="nlp">NLP</button>
+    <button class="f" data-f="bi">Analytics / BI</button>
+  </div>
+  <div class="grid">
+    <div class="pj rv" data-t="ml" data-id="0">
+      <div class="ic">🛡️</div><div class="d">JUN — JUL 2026</div>
+      <h3>Credit Card Fraud Detection</h3>
+      <p>Unsupervised + supervised fraud detection on 284,807 heavily imbalanced transactions, with a Streamlit scoring app.</p>
+      <div class="chips"><span class="chip">Isolation Forest</span><span class="chip">Random Forest</span><span class="chip">Streamlit</span></div>
+      <div class="more">Open case study + live demo →</div>
+    </div>
+    <div class="pj rv" data-t="bi" data-id="1">
+      <div class="ic">⚡</div><div class="d">MAR — APR 2026</div>
+      <h3>India's Electricity Generation & Consumption Dashboard</h3>
+      <p>Interactive Power BI dashboard tracking state-wise generation-consumption gaps from government data.</p>
+      <div class="chips"><span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Power Query</span></div>
+      <div class="more">Open case study →</div>
+    </div>
+    <div class="pj rv" data-t="nlp ml" data-id="2">
+      <div class="ic">🔍</div><div class="d">MAR — APR 2026</div>
+      <h3>AI Fact Checker</h3>
+      <p>NLP system that parses claims, cross-references reliable sources and flags likely misinformation.</p>
+      <div class="chips"><span class="chip">TF-IDF</span><span class="chip">Logistic Regression</span><span class="chip">Wikipedia API</span></div>
+      <div class="more">Open case study →</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sh rv"><span class="n">04</span><h2>Skills</h2><span class="ln"></span></div>
+  <div class="sk">
+    <div class="card rv"><h4>// LANGUAGES</h4><div class="pills">
+      <span class="pill">Python</span><span class="pill">SQL</span><span class="pill">MySQL</span><span class="pill">C++</span><span class="pill">C</span><span class="pill">Java</span></div></div>
+    <div class="card rv"><h4>// TOOLS & PLATFORMS</h4><div class="pills">
+      <span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Excel</span><span class="pill">Matplotlib</span><span class="pill">Streamlit</span><span class="pill">Git/GitHub</span><span class="pill">VS Code</span><span class="pill">Jupyter</span></div></div>
+    <div class="card rv"><h4>// SOFT SKILLS</h4><div class="pills">
+      <span class="pill">Public Speaking</span><span class="pill">Leadership</span><span class="pill">Teamwork</span><span class="pill">Problem-Solving</span></div></div>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section id="terminal">
+  <div class="sh rv"><span class="n">05</span><h2>Ask the terminal</h2><span class="ln"></span></div>
+  <div class="term rv">
+    <div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>aprameyya@portfolio: ~</span></div>
+    <div id="tout"></div>
+    <div class="tl"><b>❯</b><input id="tin" autocomplete="off" spellcheck="false" placeholder="type 'help' and press Enter"></div>
+  </div>
+  <div class="hints rv">
+    <button class="f" data-cmd="whoami">whoami</button><button class="f" data-cmd="projects">projects</button>
+    <button class="f" data-cmd="skills">skills</button><button class="f" data-cmd="contact">contact</button>
+    <button class="f" data-cmd="sudo hire aprameyya">sudo hire aprameyya</button>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="sh rv"><span class="n">06</span><h2>Journey</h2><span class="ln"></span></div>
+  <div class="two">
+    <div class="rv">
+      <div class="sub">EDUCATION</div>
+      <div class="tlist">
+        <div class="ti"><div class="when">AUG 2024 — PRESENT</div><h4>Lovely Professional University</h4><p>B.Tech, Computer Science & Engineering · CGPA 7.93 (after 4 semesters) · Phagwara, Punjab</p></div>
+        <div class="ti"><div class="when">2023 — 2024</div><h4>Delhi Public School, R.K. Puram</h4><p>Intermediate · 73%</p></div>
+        <div class="ti"><div class="when">2021 — 2022</div><h4>Delhi Public School, R.K. Puram</h4><p>Matriculation · 93%</p></div>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="sub">TRAINING & CERTIFICATES</div>
+      <div class="tlist">
+        <div class="ti"><div class="when">JUN — JUL 2026 · TRAINING</div><h4>Artificial Intelligence: From Basics to Agentic AI</h4><p>LPU · AI, ML & Deep Learning fundamentals; NLP, Transformers, Agentic AI.</p>
+          <a class="lnk" href="https://drive.google.com/file/d/1fc68hCFJcAkA3ngeQ5XvZ1KuHDOP3QZU/view?usp=drive_link" target="_blank" rel="noopener">↗ Certificate</a></div>
+        <div class="ti"><div class="when">SEP 2026</div><h4>Database Management System – Part 1</h4><p>Infosys Springboard</p>
+          <a class="lnk" href="https://drive.google.com/file/d/1eDdidsXVcEy-jYwS0RYCL1wBtsI3gM9U/view?usp=drive_link" target="_blank" rel="noopener">↗ Certificate</a></div>
+        <div class="ti"><div class="when">AUG 2025</div><h4>C++ Programming</h4><p>Infosys Springboard</p>
+          <a class="lnk" href="https://drive.google.com/file/d/1lDyRTc4Z--MNU_yBANTPVrGnvNJuU-An/view?usp=drive_link" target="_blank" rel="noopener">↗ Certificate</a></div>
+        <div class="ti"><div class="when">MAR 2025</div><h4>Data Management, Excel and Tableau</h4><p>Tech Veda</p>
+          <a class="lnk" href="https://drive.google.com/file/d/1zb0oDhhsqP5DmX_ZG_kliIiIr2AnvIY8/view?usp=drive_link" target="_blank" rel="noopener">↗ Certificate</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sh rv"><span class="n">07</span><h2>Contact</h2><span class="ln"></span></div>
+  <div class="big rv">Let's build<br>something <span>smart.</span></div>
+  <p class="lead rv" style="margin:26px auto 0">Hiring for data or ML roles, or have an idea worth prototyping? My inbox is open.</p>
+  <div class="cl rv">
+    <button class="btn p" id="copy">✉ gargaprameyya4@gmail.com</button>
+    <a class="btn" href="https://www.linkedin.com/in/aprameyya-garg-0b0139257/" target="_blank" rel="noopener">in · LinkedIn</a>
+    <a class="btn" href="https://github.com/ga-creator" target="_blank" rel="noopener">⌘ GitHub</a>
+    <a class="btn" href="tel:+918826463715">☏ +91 88264 63715</a>
+  </div>
+</section>
+
+<footer>Designed & built for Aprameyya Garg · © 2026</footer>
+
+<div id="modal"><div class="mb" id="mb"></div></div>
+<div id="toast">Email copied!</div>
+
+<script>
+// ---------- data ----------
+const P=[
+ {t:'Credit Card Fraud Detection',d:'JUN — JUL 2026',gh:'https://github.com/ga-creator/credit_card_fraud_detection',
+  p:'An end-to-end fraud detection system on 284,807 transactions with severe class imbalance, comparing an unsupervised approach that needs no fraud labels against a supervised one.',
+  pts:['Isolation Forest (unsupervised) and Random Forest (supervised) with RobustScaler preprocessing.','Evaluated with precision, recall, F1, ROC-AUC and PR-AUC — the right metrics when fraud is a tiny minority.','Streamlit app for CSV batch scoring, manual transaction analysis, risk-level classification and feature-level prediction explanations.'],
+  bars:[['Random Forest ROC-AUC',.971],['Isolation Forest ROC-AUC (no labels)',.946]],
+  tech:'Python · Scikit-learn · RobustScaler · Isolation Forest · Random Forest · Matplotlib · Seaborn · Plotly · Streamlit',demo:1},
+ {t:"India's Electricity Generation & Consumption",d:'MAR — APR 2026',gh:'https://github.com/ga-creator/Power-BI-Data-Analytics-Dashboard-',
+  p:"An interactive Power BI dashboard analysing India's electricity generation and consumption trends using a real-world government dataset.",
+  pts:['Cleaned and transformed raw government data with Power Query.','Created calculated KPIs in DAX to track state-wise generation-consumption gaps over time.','Designed slicers, trend charts and state-wise breakdowns so stakeholders can explore energy patterns and surface insights.'],
+  tech:'Power BI · DAX · Power Query · Excel'},
+ {t:'AI Fact Checker',d:'MAR — APR 2026',gh:'https://github.com/ga-creator/int428-ai-',
+  p:'An AI-powered fact-checking system that uses NLP to parse user-submitted claims and cross-reference them against reliable online sources.',
+  pts:['Text similarity and verification pipeline scoring claim credibility with TF-IDF and Logistic Regression.','Flags statements likely to be misinformation using evidence pulled via the Wikipedia API.','Scalable, user-friendly Streamlit workflow returning clear, explainable results per claim.'],
+  tech:'Python · Pandas · Scikit-learn · TF-IDF · Logistic Regression · Wikipedia API · Streamlit'}
+];
+
+// ---------- nav ----------
+const nav=document.getElementById('nav'),links=document.getElementById('links');
+document.getElementById('burger').onclick=()=>links.classList.toggle('open');
+links.querySelectorAll('a').forEach(a=>a.onclick=()=>links.classList.remove('open'));
+const secs=[...document.querySelectorAll('section[id]')];
+addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',scrollY>30);
+  let cur='';secs.forEach(s=>{if(scrollY>=s.offsetTop-200)cur=s.id});
+  links.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+});
+
+// ---------- cursor glow ----------
+const glow=document.getElementById('glow');
+addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+
+// ---------- typing ----------
+const roles=['Data Analyst','Machine Learning Enthusiast','Power BI Dashboard Builder','CSE Undergrad @ LPU'];
+let ri=0,ci=0,del=false;const ty=document.getElementById('typed');
+(function tick(){
+  const w=roles[ri];ty.textContent=w.slice(0,ci);
+  if(!del&&ci<w.length){ci++;setTimeout(tick,70)}
+  else if(!del){del=true;setTimeout(tick,1600)}
+  else if(ci>0){ci--;setTimeout(tick,35)}
+  else{del=false;ri=(ri+1)%roles.length;setTimeout(tick,300)}
+})();
+
+// ---------- network canvas ----------
+const cv=document.getElementById('net'),cx=cv.getContext('2d');let W,H,pts=[],m={x:-999,y:-999};
+function size(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight;
+  const n=Math.min(110,Math.floor(W*H/14000));pts=[];
+  for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,a:Math.random()<.06});}
+size();addEventListener('resize',size);
+document.getElementById('hero').addEventListener('mousemove',e=>{const r=cv.getBoundingClientRect();m.x=e.clientX-r.left;m.y=e.clientY-r.top});
+document.getElementById('hero').addEventListener('mouseleave',()=>{m.x=m.y=-999});
+(function draw(){
+  cx.clearRect(0,0,W,H);
+  for(const p of pts){
+    p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    const dx=m.x-p.x,dy=m.y-p.y,dd=Math.hypot(dx,dy);
+    if(dd<180){p.x-=dx*.004;p.y-=dy*.004}
+  }
+  for(let i=0;i<pts.length;i++){const a=pts[i];
+    for(let j=i+1;j<pts.length;j++){const b=pts[j],d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<130){cx.strokeStyle=`rgba(61,224,255,${(1-d/130)*.18})`;cx.lineWidth=1;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke()}}
+    const md=Math.hypot(a.x-m.x,a.y-m.y);
+    if(md<200){cx.strokeStyle=`rgba(198,255,61,${(1-md/200)*.5})`;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(m.x,m.y);cx.stroke()}
+    cx.fillStyle=a.a?'#ff5c7a':'rgba(232,237,245,.7)';cx.beginPath();cx.arc(a.x,a.y,a.a?3:1.6,0,7);cx.fill();
+    if(a.a){cx.strokeStyle='rgba(255,92,122,.35)';cx.beginPath();cx.arc(a.x,a.y,9,0,7);cx.stroke()}
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ---------- reveal + counters ----------
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');
+  e.target.querySelectorAll('[data-c]').forEach(count);io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(i%4)*80+'ms';io.observe(el)});
+function count(el){const t=+el.dataset.c,dp=+(el.dataset.d||0),t0=performance.now();
+  (function f(n){const k=Math.min(1,(n-t0)/1800),e=1-Math.pow(1-k,4),v=t*e;
+    el.textContent=dp?v.toFixed(dp):Math.round(v).toLocaleString('en-IN');if(k<1)requestAnimationFrame(f)})(t0);}
+
+// ---------- project filters + tilt ----------
+document.querySelectorAll('.filters .f').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.filters .f').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  document.querySelectorAll('.pj').forEach(p=>p.classList.toggle('hide',b.dataset.f!=='all'&&!p.dataset.t.includes(b.dataset.f)));});
+document.querySelectorAll('.pj').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+    c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px');
+    c.style.transform=`perspective(900px) rotateX(${(y/r.height-.5)*-8}deg) rotateY(${(x/r.width-.5)*8}deg)`});
+  c.addEventListener('mouseleave',()=>c.style.transform='');
+  c.onclick=()=>openP(+c.dataset.id);});
+
+// ---------- modal ----------
+const modal=document.getElementById('modal'),mb=document.getElementById('mb');
+function openP(i){const p=P[i];
+  mb.innerHTML=`<button class="x" onclick="closeM()">✕</button><div class="d c-a" style="font-family:var(--mono);font-size:.8rem">${p.d}</div>
+  <h3>${p.t}</h3><p>${p.p}</p><ul>${p.pts.map(x=>`<li>${x}</li>`).join('')}</ul>
+  ${p.bars?`<div class="bars">${p.bars.map(b=>`<div class="bar"><div class="top"><span>${b[0]}</span><span class="c-a">${b[1]}</span></div><div class="tr"><div class="fl" data-w="${b[1]*100}"></div></div></div>`).join('')}</div>`:''}
+  ${p.demo?demoHTML():''}
+  <p style="margin-top:20px;font-family:var(--mono);font-size:.8rem">${p.tech}</p>
+  <a class="btn p" style="margin-top:22px" href="${p.gh}" target="_blank" rel="noopener">View on GitHub ↗</a>`;
+  modal.classList.add('open');
+  setTimeout(()=>mb.querySelectorAll('.fl').forEach(f=>f.style.width=f.dataset.w+'%'),60);
+  if(p.demo)initDemo();}
+function closeM(){modal.classList.remove('open')}
+modal.onclick=e=>{if(e.target===modal)closeM()};
+addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+
+// toy fraud risk demo (illustrative heuristic, not the trained model)
+function demoHTML(){return `<div class="demo"><h4>▶ TRY IT — toy risk scorer (illustrative)</h4>
+  <div class="rg"><label>Amount <span id="va">₹2,500</span></label><input type="range" id="ra" min="0" max="100" value="10"></div>
+  <div class="rg"><label>Hour of day <span id="vh">14:00</span></label><input type="range" id="rh" min="0" max="23" value="14"></div>
+  <div class="rg"><label>Distance from usual location <span id="vd">5 km</span></label><input type="range" id="rd" min="0" max="100" value="5"></div>
+  <div class="risk"><div class="meter"><div class="pin" id="pin"></div></div><div class="lab" id="rl">LOW</div></div>
+  <p class="c-m" style="font-size:.78rem;margin-top:12px">A simplified heuristic to show the idea of risk-level classification — the real app uses the trained models.</p></div>`}
+function initDemo(){const a=mb.querySelector('#ra'),h=mb.querySelector('#rh'),d=mb.querySelector('#rd');
+  const up=()=>{const amt=Math.round(Math.pow(+a.value/100,2)*200000)+100;
+    mb.querySelector('#va').textContent='₹'+amt.toLocaleString('en-IN');
+    mb.querySelector('#vh').textContent=String(h.value).padStart(2,'0')+':00';
+    mb.querySelector('#vd').textContent=Math.round(Math.pow(d.value/100,2)*3000)+' km';
+    const night=(+h.value<5||+h.value>23)?1:(+h.value<7?.5:0);
+    let s=Math.min(1,.45*(+a.value/100)+.3*night+.4*(+d.value/100));
+    mb.querySelector('#pin').style.left=`calc(${s*100}% - 2px)`;
+    const rl=mb.querySelector('#rl');
+    if(s<.35){rl.textContent='LOW';rl.style.color='#3dff9a'}else if(s<.65){rl.textContent='MEDIUM';rl.style.color='#ffd23d'}else{rl.textContent='HIGH ⚠';rl.style.color='#ff5c7a'}};
+  [a,h,d].forEach(x=>x.oninput=up);up();}
+
+// ---------- terminal ----------
+const out=document.getElementById('tout'),tin=document.getElementById('tin');
+const C={
+ help:()=>`<span class="c-a">Available commands:</span>
+  whoami      who is this?
+  projects    list projects
+  skills      tech stack
+  experience  work history
+  education   academics
+  contact     reach out
+  clear       clear screen`,
+ whoami:()=>`<span class="c-b">Aprameyya Garg</span> — B.Tech CSE @ Lovely Professional University.
+Into ML, data analytics and building tools people actually use.`,
+ projects:()=>P.map((p,i)=>`<span class="c-a">[${i+1}]</span> ${p.t} <span class="c-m">(${p.d})</span>`).join('\n')+`\n<span class="c-m">Tip: type 'open 1' to view a case study.</span>`,
+ skills:()=>`<span class="c-b">languages</span>  Python, SQL, MySQL, C++, C, Java
+<span class="c-b">tools</span>      Pandas, NumPy, Scikit-learn, Power BI, Tableau, Excel,
+           Matplotlib, Streamlit, Git/GitHub, Jupyter
+<span class="c-b">soft</span>       Public Speaking, Leadership, Teamwork, Problem-Solving`,
+ experience:()=>`<span class="c-a">Intern · Firstplanit Ltd</span> <span class="c-m">(Jun–Jul 2026)</span>
+  ▹ RAM-efficient Python image-search feature
+  ▹ Front-end for internal workflow pages`,
+ education:()=>`LPU — B.Tech CSE, CGPA 7.93 <span class="c-m">(2024–present)</span>
+DPS R.K. Puram — Class XII 73%, Class X 93%`,
+ contact:()=>`email   gargaprameyya4@gmail.com
+phone   +91-8826463715
+github  github.com/ga-creator
+linkedin linkedin.com/in/aprameyya-garg-0b0139257`,
+ 'sudo hire aprameyya':()=>`<span class="c-a">[sudo] password accepted ✓</span>
+Initialising onboarding... ████████████ 100%
+<span class="c-b">Great choice.</span> Send the offer to gargaprameyya4@gmail.com 🚀`,
+ ls:()=>'about.txt  projects/  skills.json  resume.pdf',
+};
+function print(h,cls){const d=document.createElement('div');if(cls)d.className=cls;d.innerHTML=h;out.appendChild(d);out.scrollTop=out.scrollHeight}
+function run(raw){const c=raw.trim().toLowerCase();print(`<span class="c-a">❯</span> ${raw.replace(/</g,'&lt;')}`);
+  if(!c)return;if(c==='clear'){out.innerHTML='';return}
+  const mo=c.match(/^open (\d)$/);if(mo&&P[mo[1]-1]){print('Opening case study...','c-m');setTimeout(()=>openP(mo[1]-1),300);return}
+  if(C[c])print(C[c]());else if(c.startsWith('sudo'))print('Nice try. Only one sudo command works here 😉','c-w');
+  else print(`command not found: ${c.replace(/</g,'&lt;')} — try 'help'`,'c-w');}
+print(`<span class="c-m">Welcome to aprameyya.sh — type</span> <span class="c-a">help</span> <span class="c-m">to get started.</span>`);
+tin.addEventListener('keydown',e=>{if(e.key==='Enter'){run(tin.value);tin.value=''}});
+document.querySelectorAll('[data-cmd]').forEach(b=>b.onclick=()=>{run(b.dataset.cmd);tin.focus()});
+
+// ---------- copy email ----------
+const toast=document.getElementById('toast');
+document.getElementById('copy').onclick=()=>{
+  const em='gargaprameyya4@gmail.com';
+  const done=()=>{toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)};
+  if(navigator.clipboard)navigator.clipboard.writeText(em).then(done).catch(()=>{location.href='mailto:'+em});
+  else location.href='mailto:'+em;};
+</script>
+</body>
+</html>
