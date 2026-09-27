@@ -288,7 +288,7 @@ footer{text-align:center;padding:30px;color:var(--mut);font-family:var(--mono);f
   <div class="about">
     <div class="rv">
       <p>I'm a <b>B.Tech Computer Science & Engineering</b> student at Lovely Professional University, drawn to the space where <b>machine learning meets data analytics</b>.</p>
-      <p>I've built fraud detectors that work <b>without labels</b>, Power BI dashboards on raw government energy data, and an NLP pipeline that scores the credibility of claims. Most recently I interned at <b>Firstplanit Ltd</b>, shipping a RAM-efficient image-search feature.</p>
+      <p>I've built fraud detectors that work <b>without labels</b>, Power BI dashboards on raw government energy data, and an NLP pipeline that scores the credibility of claims. Most recently I interned at <b>Firstplanit Ltd</b>, building an embedding-based image-search feature with FAISS and FastAPI.</p>
       <p>Outside the code: public speaking, leading teams, and solving problems that don't have a tutorial yet.</p>
     </div>
     <div class="card rv">
@@ -309,10 +309,13 @@ footer{text-align:center;padding:30px;color:var(--mut);font-family:var(--mono);f
     <div>
       <h3>Intern · Firstplanit Ltd</h3>
       <ul>
-        <li>Developed an image-search feature in Python, optimised for fast search and RAM-efficient data processing.</li>
-        <li>Built front-end pages for internal workflows, translating team requirements into functional tools.</li>
-        <li>Collaborated cross-functionally and communicated technical progress to senior stakeholders.</li>
+        <li>Engineered an image-search feature using Python and computer vision, working with image embeddings and similarity-based search.</li>
+        <li>Indexed embeddings with FAISS and contributed to the backend implementation in FastAPI.</li>
+        <li>Optimised the search pipeline for speed, memory efficiency and scalability through chunked processing and incremental indexing.</li>
+        <li>Built front-end pages that streamlined internal team workflows and usability.</li>
+        <li>Collaborated with a cross-functional team and communicated technical progress to senior stakeholders.</li>
       </ul>
+<div class="chips" style="margin:6px 0 4px"><span class="chip">Python</span><span class="chip">Computer Vision</span><span class="chip">FAISS</span><span class="chip">FastAPI</span></div>
       <a class="lnk" href="https://drive.google.com/file/d/1cW9SqNUToS9mFZ4c_nAYSIPU7yvB-LqB/view?usp=sharing" target="_blank" rel="noopener">↗ Internship letter</a>
     </div>
   </div>
@@ -337,7 +340,7 @@ footer{text-align:center;padding:30px;color:var(--mut);font-family:var(--mono);f
     <div class="card rv"><h4>// LANGUAGES</h4><div class="pills">
       <span class="pill">Python</span><span class="pill">SQL</span><span class="pill">MySQL</span><span class="pill">C++</span><span class="pill">C</span><span class="pill">Java</span></div></div>
     <div class="card rv"><h4>// TOOLS & PLATFORMS</h4><div class="pills">
-      <span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Excel</span><span class="pill">Matplotlib</span><span class="pill">Streamlit</span><span class="pill">Git/GitHub</span><span class="pill">VS Code</span><span class="pill">Jupyter</span></div></div>
+      <span class="pill">Pandas</span><span class="pill">NumPy</span><span class="pill">Scikit-learn</span><span class="pill">Power BI</span><span class="pill">Tableau</span><span class="pill">Excel</span><span class="pill">Matplotlib</span><span class="pill">Streamlit</span><span class="pill">FAISS</span><span class="pill">FastAPI</span><span class="pill">Git/GitHub</span><span class="pill">VS Code</span><span class="pill">Jupyter</span></div></div>
     <div class="card rv"><h4>// SOFT SKILLS</h4><div class="pills">
       <span class="pill">Public Speaking</span><span class="pill">Leadership</span><span class="pill">Teamwork</span><span class="pill">Problem-Solving</span></div></div>
   </div>
@@ -578,12 +581,14 @@ const C={
 Into ML, data analytics and building tools people actually use.`,
  projects:()=>P.map((p,i)=>`<span class="c-a">[${i+1}]</span> ${p.t} <span class="c-m">(${p.d})</span>`).join('\n')+`\n<span class="c-m">Tip: type 'open 1' to view a case study.</span>`,
  skills:()=>`<span class="c-b">languages</span>  Python, SQL, MySQL, C++, C, Java
-<span class="c-b">tools</span>      Pandas, NumPy, Scikit-learn, Power BI, Tableau, Excel,
-           Matplotlib, Streamlit, Git/GitHub, Jupyter
+<span class="c-b">tools</span>      Pandas, NumPy, Scikit-learn, FAISS, FastAPI, Power BI,
+           Tableau, Excel, Matplotlib, Streamlit, Git/GitHub, Jupyter
 <span class="c-b">soft</span>       Public Speaking, Leadership, Teamwork, Problem-Solving`,
  experience:()=>`<span class="c-a">Intern · Firstplanit Ltd</span> <span class="c-m">(Jun–Jul 2026)</span>
-  ▹ RAM-efficient Python image-search feature
-  ▹ Front-end for internal workflow pages`,
+    ▹ Embedding-based image search (Python, computer vision)
+    ▹ FAISS vector indexing + FastAPI backend
+    ▹ Chunked processing & incremental indexing for memory efficiency
+    ▹ Front-end pages for internal team workflows`,
  education:()=>`LPU — B.Tech CSE, CGPA 7.93 <span class="c-m">(2024–present)</span>
 DPS R.K. Puram — Class XII 73%, Class X 93%`,
  contact:()=>`email    gargaprameyya4@gmail.com
